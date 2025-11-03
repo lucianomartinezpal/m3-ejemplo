@@ -4,7 +4,7 @@ Una aplicación web moderna y divertida con emojis para testear el deploy en Ver
 
 ## ✨ Características
 
-- 🎨 Diseño moderno y colorido
+- 🎨 Diseño moderno y colorido.
 - 😊 Interactividad con emojis
 - 📱 Responsive
 - ⚡ Construida con Next.js 14
@@ -40,4 +40,3 @@ npm start
 - CSS-in-JS
 
 ¡Disfruta probando tu web! 🎊
-
