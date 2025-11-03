@@ -3,16 +3,16 @@ const RULETTE_SIZE = 400;
 const SEGMENTS = 8; // 8 opciones
 const SEGMENT_ANGLE = (2 * Math.PI) / SEGMENTS;
 
-// Opciones de la ruleta: 8 emojis (mostrados), con valores numéricos para lógica
+// Opciones de la ruleta: 8 imágenes PNG, con valores numéricos para lógica
 const rouletteOptions = [
-    { type: 'text', value: '3', label: '😖' },
-    { type: 'text', value: '4', label: '😞' },
-    { type: 'text', value: '5', label: '😕' },
-    { type: 'text', value: '6', label: '😬' },
-    { type: 'text', value: '7', label: '🙂' },
-    { type: 'text', value: '8', label: '😄' },
-    { type: 'text', value: '9', label: '🤩' },
-    { type: 'text', value: '10', label: '🏆' },
+    { type: 'image', value: '3', imagePath: './images/producto3.png' },
+    { type: 'image', value: '4', imagePath: './images/producto4.png' },
+    { type: 'image', value: '5', imagePath: './images/producto5.png' },
+    { type: 'image', value: '6', imagePath: './images/producto6.png' },
+    { type: 'image', value: '7', imagePath: './images/producto7.png' },
+    { type: 'image', value: '8', imagePath: './images/producto8.png' },
+    { type: 'image', value: '9', imagePath: './images/producto9.png' },
+    { type: 'image', value: '10', imagePath: './images/producto10.png' },
 ];
 
 // Estado del juego
@@ -21,6 +21,8 @@ let isSpinning = false;
 let targetIndex = null; // índice objetivo del giro
 let canvas, ctx;
 let highlightedIndex = null; // segmento resaltado tras detenerse
+let imagesLoaded = false;
+let images = []; // Array para almacenar las imágenes cargadas
 
 // Elementos del DOM
 const welcomeScreen = document.getElementById('welcome-screen');
@@ -43,15 +45,55 @@ const colors = {
     excellent: ['#ffd43b', '#fcc419']     // Dorado/verde para nota 10
 };
 
+// Cargar imágenes
+function loadImages() {
+    return new Promise((resolve, reject) => {
+        let loadedCount = 0;
+        const totalImages = rouletteOptions.length;
+
+        rouletteOptions.forEach((option, index) => {
+            const img = new Image();
+            img.onload = () => {
+                loadedCount++;
+                images[index] = img;
+                if (loadedCount === totalImages) {
+                    imagesLoaded = true;
+                    resolve();
+                }
+            };
+            img.onerror = () => {
+                console.error(`Error cargando imagen: ${option.imagePath}`);
+                // Crear imagen placeholder si falla
+                images[index] = null;
+                loadedCount++;
+                if (loadedCount === totalImages) {
+                    imagesLoaded = true;
+                    resolve();
+                }
+            };
+            img.src = option.imagePath;
+        });
+    });
+}
+
 // Inicialización
-function init() {
+async function init() {
     canvas = document.getElementById('roulette-canvas');
     if (!canvas) return; // por si se carga antes del DOM
     canvas.width = RULETTE_SIZE;
     canvas.height = RULETTE_SIZE;
     ctx = canvas.getContext('2d');
 
-    drawRoulette();
+    // Cargar imágenes antes de dibujar
+    try {
+        await loadImages();
+        drawRoulette();
+    } catch (error) {
+        console.error('Error cargando imágenes:', error);
+        // Dibujar sin imágenes si falla
+        drawRoulette();
+    }
+
     setupEventListeners();
 }
 
@@ -123,24 +165,38 @@ function drawRoulette(rotation = 0, highlightIndex = null) {
         ctx.lineWidth = 3;
         ctx.stroke();
 
-        // Dibujar texto
+        // Dibujar imagen
         const midAngle = (startAngle + endAngle) / 2;
-        const textRadius = radius * 0.7;
-        const textX = Math.cos(midAngle) * textRadius;
-        const textY = Math.sin(midAngle) * textRadius;
+        const imageRadius = radius * 0.65;
+        const imageX = Math.cos(midAngle) * imageRadius;
+        const imageY = Math.sin(midAngle) * imageRadius;
 
         ctx.save();
-        ctx.translate(textX, textY);
+        ctx.translate(imageX, imageY);
         ctx.rotate(midAngle + Math.PI / 2);
-        ctx.fillStyle = '#fff';
-        ctx.strokeStyle = '#000';
-        ctx.lineWidth = 2;
-        ctx.font = 'bold 32px Arial';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
 
-        ctx.strokeText(option.label, 0, 0);
-        ctx.fillText(option.label, 0, 0);
+        // Tamaño de la imagen en el segmento
+        const imageSize = radius * 0.35;
+        
+        if (images[index] && imagesLoaded) {
+            // Dibujar imagen centrada
+            ctx.drawImage(
+                images[index],
+                -imageSize / 2,
+                -imageSize / 2,
+                imageSize,
+                imageSize
+            );
+        } else {
+            // Placeholder si la imagen no está cargada
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.fillRect(-imageSize / 2, -imageSize / 2, imageSize, imageSize);
+            ctx.fillStyle = '#666';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(option.value, 0, 0);
+        }
 
         ctx.restore();
     });
