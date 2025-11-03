@@ -3,16 +3,16 @@ const RULETTE_SIZE = 400;
 const SEGMENTS = 8; // 8 opciones
 const SEGMENT_ANGLE = (2 * Math.PI) / SEGMENTS;
 
-// Opciones de la ruleta: 8 textos (notas)
+// Opciones de la ruleta: 8 emojis (mostrados), con valores numéricos para lógica
 const rouletteOptions = [
-    { type: 'text', value: '3', label: '3' },
-    { type: 'text', value: '4', label: '4' },
-    { type: 'text', value: '5', label: '5' },
-    { type: 'text', value: '6', label: '6' },
-    { type: 'text', value: '7', label: '7' },
-    { type: 'text', value: '8', label: '8' },
-    { type: 'text', value: '9', label: '9' },
-    { type: 'text', value: '10', label: '10' },
+    { type: 'text', value: '3', label: '😖' },
+    { type: 'text', value: '4', label: '😞' },
+    { type: 'text', value: '5', label: '😕' },
+    { type: 'text', value: '6', label: '😬' },
+    { type: 'text', value: '7', label: '🙂' },
+    { type: 'text', value: '8', label: '😄' },
+    { type: 'text', value: '9', label: '🤩' },
+    { type: 'text', value: '10', label: '🏆' },
 ];
 
 // Estado del juego
@@ -135,7 +135,7 @@ function drawRoulette(rotation = 0, highlightIndex = null) {
         ctx.fillStyle = '#fff';
         ctx.strokeStyle = '#000';
         ctx.lineWidth = 2;
-        ctx.font = 'bold 24px Arial';
+        ctx.font = 'bold 32px Arial';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
