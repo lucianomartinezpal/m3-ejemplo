@@ -3,56 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎲 Ruleta de Notas 🎲</title>
+    <title>Deploy OK</title>
     <link rel="stylesheet" href="./styles.css">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
 </head>
 <body>
-    <!-- Pantalla de Bienvenida -->
-    <div id="welcome-screen" class="screen active fade-in">
-        <div class="welcome-container">
-            <h1 class="title">🎲 Ruleta de Notas 🎲</h1>
-            <p class="subtitle">Gira la ruleta y descubre tu nota de cierre</p>
-            <div class="info-box">
-                <p>📚 <strong>Notas 3-6:</strong> Desaprobado 🔴</p>
-                <p>✅ <strong>Notas 7-9:</strong> Aprobado 🟢</p>
-                <p>⭐ <strong>Nota 10:</strong> Aprobado Sobresaliente 🌟</p>
-            </div>
-            <button id="start-btn" class="btn-primary">🎯 Comenzar</button>
+    <main class="container">
+        <h1>✅ Static deploy funcionando</h1>
+        <p>Si ves estos estilos, el CSS también se está sirviendo correctamente.</p>
+        <div class="card">
+            <span class="pill">OK</span>
+            <p>Archivos servidos desde index.html + styles.css</p>
         </div>
-    </div>
-
-    <!-- Pantalla de Juego -->
-    <div id="game-screen" class="screen">
-        <div class="game-container fade-in">
-            <h2 class="game-title">🎲 Ruleta de Notas 🎲</h2>
-            
-            <div class="roulette-wrapper">
-                <div id="roulette-container" class="roulette-container">
-                    <canvas id="roulette-canvas"></canvas>
-                    <div class="roulette-pointer"></div>
-                    <button id="spin-btn" class="btn-spin">🎯 GIRAR</button>
-                </div>
-            </div>
-
-            <div class="instructions">
-                <p>💡 Haz clic en el botón para girar la ruleta</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Pop-up de Resultado -->
-    <div id="result-popup" class="popup">
-        <div id="result-content" class="result-content fade-in">
-            <div id="result-icon" class="result-icon">🎓</div>
-            <h2 id="result-title" class="result-title">Resultado</h2>
-            <div id="result-value" class="result-value">0</div>
-            <div id="result-message" class="result-message">Tu nota es:</div>
-            <div id="result-status" class="result-status"></div>
-            <button id="play-again-btn" class="btn-primary">🔄 Jugar Otra Vez</button>
-        </div>
-    </div>
-
-    <script src="./script.js"></script>
+    </main>
 </body>
 </html>
 
